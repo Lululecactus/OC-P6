@@ -213,6 +213,72 @@ h1 {
   outline-offset: 0.2rem;
 }
 
+dialog {
+  width: min(calc(100% - 2rem), 31.625rem);
+  max-height: calc(100dvh - 2rem);
+  padding: 2rem;
+  border: 0.35rem solid #000;
+  color: #000;
+  background: #fff;
+  font-family: inherit;
+}
+
+dialog::backdrop {
+  background: rgb(0 0 0 / 60%);
+}
+
+dialog article {
+  display: grid;
+  gap: 1rem;
+}
+
+dialog form {
+  justify-self: end;
+}
+
+dialog form button {
+  min-width: auto;
+  padding: 0.3rem 0.75rem;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: #fa0b0b;
+  font: inherit;
+  cursor: pointer;
+}
+
+dialog h2 {
+  margin: 0;
+  font-size: 2.5rem;
+  line-height: 1.1;
+}
+
+dialog > article > img {
+  width: 100%;
+  max-width: 25.5rem;
+  margin: 0 auto;
+}
+
+dialog dl {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+dialog dt {
+  font-weight: 600;
+}
+
+dialog dd {
+  margin: 0;
+  font-weight: 300;
+}
+
+dialog form button:focus-visible {
+  outline: 0.2rem solid #005fcc;
+  outline-offset: 0.2rem;
+}
+
 @media (max-width: 39.99rem) {
   .top-rated-section .movie-list > li:nth-child(n + 3) {
     display: none;
@@ -304,6 +370,23 @@ h1 {
   .top-rated-section .movie-list > li:nth-child(n + 5) {
     display: none;
   }
+
+  dialog article {
+    grid-template-columns: 1fr 12.75rem;
+  }
+
+  dialog form,
+  dialog h2,
+  dialog dl,
+  dialog p {
+    grid-column: 1;
+  }
+
+  dialog > article > img {
+    grid-column: 1 / -1;
+    grid-row: 5;
+    width: 100%;
+  }
 }
 
 @media (min-width: 64rem) {
@@ -382,5 +465,28 @@ h1 {
 
   .top-rated-section .movie-list > li:nth-child(n) {
     display: block;
+  }
+
+  dialog {
+    width: 48.625rem;
+    padding: 1.7rem 2.5rem;
+  }
+
+  dialog article {
+    grid-template-columns: 1fr 14.2rem;
+    column-gap: 2rem;
+  }
+
+  dialog form {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    justify-self: center;
+  }
+
+  dialog > article > img {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: start;
+    width: 14.2rem;
   }
 }
