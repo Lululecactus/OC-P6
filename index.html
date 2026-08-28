@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="description"
+      content="JustStreamIt, le classement des films les mieux notés."
+    >
+    <title>JustStreamIt - Vidéos à la demande</title>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#best-movie" aria-label="JustStreamIt, accueil">
+        <img
+          src="assets/images/juststreamit-logo.png"
+          alt="JustStreamIt"
+          width="354"
+          height="263"
+        >
+        <span>Vidéos à la demande</span>
+      </a>
+    </header>
+
+    <main>
+      <section id="best-movie" class="featured-section" aria-labelledby="best-movie-title">
+        <h1 id="best-movie-title">Meilleur film</h1>
+
+        <article class="featured-movie">
+          <img
+            src="assets/images/the-big-lebowski.png"
+            alt="Affiche temporaire de The Big Lebowski"
+            width="700"
+            height="1030"
+          >
+          <div>
+            <h2>The Big Lebowski</h2>
+            <p>
+              Le résumé du meilleur film sera chargé depuis l’API OCMovies.
+            </p>
+            <button type="button">Détails</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="movie-section" aria-labelledby="top-rated-title">
+        <h2 id="top-rated-title">Films les mieux notés</h2>
+        <ul class="movie-list">
+          <li>
+            <article class="movie-card">
+              <h3>Titanic</h3>
+              <button type="button" aria-label="Voir les détails de Titanic">
+                <img src="assets/images/the-big-lebowski.png" alt="Affiche temporaire de Titanic" width="700" height="1030">
+                <span>Détails</span>
+              </button>
+            </article>
+          </li>
+          <li>
+            <article class="movie-card">
+              <h3>Retour vers le futur</h3>
+              <button type="button" aria-label="Voir les détails de Retour vers le futur">
+                <img src="assets/images/the-big-lebowski.png" alt="Affiche temporaire de Retour vers le futur" width="700" height="1030">
+                <span>Détails</span>
+              </button>
+            </article>
+          </li>
+          <li>
+            <article class="movie-card">
+              <h3>Scarface</h3>
+              <button type="button" aria-label="Voir les détails de Scarface">
+                <img src="assets/images/the-big-lebowski.png" alt="Affiche temporaire de Scarface" width="700" height="1030">
+                <span>Détails</span>
+              </button>
+            </article>
+          </li>
+          <li>
+            <article class="movie-card">
+              <h3>Pulp Fiction</h3>
+              <button type="button" aria-label="Voir les détails de Pulp Fiction">
+                <img src="assets/images/the-big-lebowski.png" alt="Affiche temporaire de Pulp Fiction" width="700" height="1030">
+                <span>Détails</span>
+              </button>
+            </article>
+          </li>
+          <li>
+            <article class="movie-card">
+              <h3>Le Parrain</h3>
+              <button type="button" aria-label="Voir les détails du Parrain">
+                <img src="assets/images/the-big-lebowski.png" alt="Affiche temporaire du Parrain" width="700" height="1030">
+                <span>Détails</span>
+              </button>
+            </article>
+          </li>
+          <li>
+            <article class="movie-card">
+              <h3>Alien</h3>
+              <button type="button" aria-label="Voir les détails d’Alien">
+                <img src="assets/images/the-big-lebowski.png" alt="Affiche temporaire d’Alien" width="700" height="1030">
+                <span>Détails</span>
+              </button>
+            </article>
+          </li>
+        </ul>
+        <button class="show-more-button" type="button">Voir plus</button>
+      </section>
+
+      <section class="movie-section" aria-labelledby="mystery-title">
+        <h2 id="mystery-title">Mystery</h2>
+        <ul class="movie-list" aria-label="Films Mystery">
+          <li>
+            <article class="movie-card">
+              <h3>Film Mystery temporaire</h3>
+              <p>Les films Mystery seront chargés depuis l’API.</p>
+            </article>
+          </li>
+        </ul>
+        <button class="show-more-button" type="button">Voir plus</button>
+      </section>
+
+      <section class="movie-section" aria-labelledby="action-title">
+        <h2 id="action-title">Films d’action</h2>
+        <ul class="movie-list" aria-label="Films d’action">
+          <li>
+            <article class="movie-card">
+              <h3>Film d’action temporaire</h3>
+              <p>Les films d’action seront chargés depuis l’API.</p>
+            </article>
+          </li>
+        </ul>
+        <button class="show-more-button" type="button">Voir plus</button>
+      </section>
+
+      <section class="movie-section" aria-labelledby="other-category-title">
+        <h2 id="other-category-title">Autres</h2>
+        <label for="genre-select">Choisir une catégorie</label>
+        <select id="genre-select" name="genre">
+          <option value="action">Films d’action</option>
+          <option value="comedy">Comédies</option>
+          <option value="family">Famille</option>
+          <option value="fantasy">Films de fantasy</option>
+          <option value="horror">Films d’horreur</option>
+          <option value="sci-fi">Science-fiction</option>
+          <option value="western">Westerns</option>
+        </select>
+        <ul class="movie-list" aria-label="Films de la catégorie choisie">
+          <li>
+            <article class="movie-card">
+              <h3>Film de catégorie temporaire</h3>
+              <p>Les films de la catégorie sélectionnée seront chargés depuis l’API.</p>
+            </article>
+          </li>
+        </ul>
+        <button class="show-more-button" type="button">Voir plus</button>
+      </section>
+    </main>
+
+    <dialog id="movie-details" aria-labelledby="movie-details-title">
+      <article>
+        <form method="dialog">
+          <button type="submit" aria-label="Fermer la fenêtre de détails">×</button>
+        </form>
+        <h2 id="movie-details-title">The Big Lebowski</h2>
+        <img
+          src="assets/images/the-big-lebowski.png"
+          alt="Affiche de The Big Lebowski"
+          width="700"
+          height="1030"
+        >
+        <dl>
+          <div><dt>Genres</dt><dd>Comedy, Crime</dd></div>
+          <div><dt>Date de sortie</dt><dd>1998</dd></div>
+          <div><dt>Classification</dt><dd>R</dd></div>
+          <div><dt>Score IMDb</dt><dd>8,1 / 10</dd></div>
+          <div><dt>Réalisateurs</dt><dd>Joel et Ethan Coen</dd></div>
+          <div><dt>Acteurs</dt><dd>Jeff Bridges, John Goodman, Julianne Moore</dd></div>
+          <div><dt>Durée</dt><dd>117 minutes</dd></div>
+          <div><dt>Pays d’origine</dt><dd>États-Unis</dd></div>
+          <div><dt>Recettes au box-office</dt><dd>46 189 568 USD</dd></div>
+        </dl>
+        <p>
+          La description complète du film sera chargée depuis l’API OCMovies.
+        </p>
+      </article>
+    </dialog>
+  </body>
+</html>
