@@ -48,11 +48,15 @@ img {
 
 main {
   width: min(calc(100% - 2rem), var(--mobile-content-width));
-  margin: 0.35rem auto 2.75rem;
+  margin: 2.25rem auto 2.75rem;
 }
 
 section + section {
-  margin-top: 1.25rem;
+  margin-top: 1.875rem;
+}
+
+.featured-section + .top-rated-section {
+  margin-top: 2.5rem;
 }
 
 h1,
@@ -69,7 +73,7 @@ h3 {
 }
 
 h1 {
-  margin-bottom: 0.55rem;
+  margin-bottom: 1.7rem;
   font-size: 1.625rem;
   line-height: 1.1;
 }
@@ -124,7 +128,7 @@ h1 {
 }
 
 .top-rated-section h2 {
-  margin-bottom: 0.65rem;
+  margin-bottom: 1.35rem;
   font-size: 1.5rem;
   line-height: 1.1;
 }
@@ -209,7 +213,7 @@ h1 {
   border-radius: 999px;
   color: #fff;
   background: #fa0b0b;
-  margin: 0.45rem auto 0;
+  margin: 0.9rem auto 0;
   font: inherit;
   font-size: 0.875rem;
   font-weight: 500;
@@ -219,7 +223,7 @@ h1 {
 
 .category-section h2,
 .other-category-section label {
-  margin-bottom: 0.65rem;
+  margin-bottom: 1.35rem;
   font-size: 1.5rem;
   font-weight: 600;
   line-height: 1.1;
@@ -390,14 +394,19 @@ dialog form button:focus-visible {
 
   main {
     width: min(calc(100% - 4rem), 38.6875rem);
-    margin-top: 0.8rem;
+    margin-top: 2.5rem;
   }
 
   section + section {
-    margin-top: 1.7rem;
+    margin-top: 2.2rem;
+  }
+
+  .featured-section + .top-rated-section {
+    margin-top: 3.25rem;
   }
 
   h1 {
+    margin-bottom: 1.875rem;
     font-size: 2.25rem;
   }
 
@@ -436,11 +445,13 @@ dialog form button:focus-visible {
   }
 
   .top-rated-section h2 {
+    margin-bottom: 1.85rem;
     font-size: 1.85rem;
   }
 
   .category-section h2,
   .other-category-section label {
+    margin-bottom: 1.85rem;
     font-size: 1.85rem;
   }
 
@@ -501,10 +512,23 @@ dialog form button:focus-visible {
 
   main {
     width: var(--desktop-content-width);
-    margin-top: 0.85rem;
+    margin-top: 3.25rem;
+  }
+
+  section + section {
+    margin-top: 2.5rem;
+  }
+
+  .featured-section + .top-rated-section {
+    margin-top: 3.25rem;
+  }
+
+  .top-rated-section + .category-section {
+    margin-top: 3.8rem;
   }
 
   h1 {
+    margin-bottom: 2.5rem;
     font-size: 2.5rem;
   }
 
@@ -531,11 +555,13 @@ dialog form button:focus-visible {
   }
 
   .top-rated-section h2 {
+    margin-bottom: 3.75rem;
     font-size: 2.25rem;
   }
 
   .category-section h2,
   .other-category-section label {
+    margin-bottom: 3.75rem;
     font-size: 2.25rem;
   }
 
