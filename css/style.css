@@ -199,12 +199,60 @@ h1 {
   line-height: 1.1;
 }
 
-.top-rated-section .show-more-button {
+.top-rated-section .show-more-button,
+.category-section .show-more-button {
   display: block;
+  min-width: 8.35rem;
+  padding: 0.28rem 1.05rem;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: #fa0b0b;
   margin: 0.45rem auto 0;
   font: inherit;
   font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.1;
   cursor: pointer;
+}
+
+.category-section h2 {
+  margin-bottom: 0.65rem;
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.category-section .movie-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.category-section .movie-card--placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1.03;
+  padding: 1.25rem;
+  background: #d9d9d9;
+  text-align: center;
+}
+
+.category-section .movie-card--placeholder h3 {
+  display: none;
+}
+
+.category-section .movie-card--placeholder p {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.category-section .show-more-button:focus-visible {
+  outline: 0.2rem solid #005fcc;
+  outline-offset: 0.2rem;
 }
 
 .top-rated-section .movie-card button:focus-visible,
@@ -362,6 +410,18 @@ dialog form button:focus-visible {
     font-size: 1.85rem;
   }
 
+  .category-section h2 {
+    font-size: 1.85rem;
+  }
+
+  .category-section .movie-card--placeholder {
+    aspect-ratio: 1.485;
+  }
+
+  .category-section .movie-card--placeholder p {
+    font-size: 1.75rem;
+  }
+
   .top-rated-section .movie-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.85rem 2.1rem;
@@ -440,6 +500,18 @@ dialog form button:focus-visible {
 
   .top-rated-section h2 {
     font-size: 2.25rem;
+  }
+
+  .category-section h2 {
+    font-size: 2.25rem;
+  }
+
+  .category-section .movie-card--placeholder {
+    aspect-ratio: 1.51;
+  }
+
+  .category-section .show-more-button {
+    display: none;
   }
 
   .top-rated-section .movie-list {
