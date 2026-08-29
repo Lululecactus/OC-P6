@@ -1,36 +1,39 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
       content="JustStreamIt, le classement des films les mieux notés."
-   >
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600&display=swap"
       rel="stylesheet"
-   >
+    />
     <link
       rel="icon"
       href="assets/images/juststreamit-logo.png"
       type="image/png"
-   >
-    <link rel="stylesheet" href="css/style.css">
+    />
+    <link rel="stylesheet" href="css/style.css" />
     <title>JustStreamIt - Vidéos à la demande</title>
+    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/api.js"></script>
   </head>
 
   <body>
     <header class="site-header">
-      <a class="brand" href="#best-movie" aria-label="JustStreamIt, accueil">
+      <a class="brand" href="/" aria-label="JustStreamIt, accueil">
         <img
           src="assets/images/juststreamit-logo.png"
-          alt="JustStreamIt"
+          alt=""
           width="354"
           height="263"
-       >
+        />
+        <h1 class="visually-hidden">JustStreamIt — Vidéos à la demande</h1>
         <span>Vidéos à la demande</span>
       </a>
     </header>
@@ -41,7 +44,7 @@
         class="featured-section"
         aria-labelledby="best-movie-title"
       >
-        <h1 id="best-movie-title">Meilleur film</h1>
+        <h2 id="best-movie-title">Meilleur film</h2>
 
         <article class="featured-movie">
           <img
@@ -49,9 +52,9 @@
             alt="Affiche temporaire de The Big Lebowski"
             width="700"
             height="1030"
-         >
+          />
           <div>
-            <h2>The Big Lebowski</h2>
+            <h3>The Big Lebowski</h3>
             <p>Le résumé du meilleur film sera chargé depuis l’API OCMovies.</p>
             <button type="button">Détails</button>
           </div>
@@ -73,7 +76,7 @@
                   alt="Affiche de Titanic"
                   width="700"
                   height="1030"
-               >
+                />
                 <span>Détails</span>
               </button>
             </article>
@@ -90,7 +93,7 @@
                   alt="Affiche de Retour vers le futur"
                   width="700"
                   height="1030"
-               >
+                />
                 <span>Détails</span>
               </button>
             </article>
@@ -104,7 +107,7 @@
                   alt="Affiche de Scarface"
                   width="700"
                   height="1030"
-               >
+                />
                 <span>Détails</span>
               </button>
             </article>
@@ -121,7 +124,7 @@
                   alt="Affiche de Pulp Fiction"
                   width="700"
                   height="1030"
-               >
+                />
                 <span>Détails</span>
               </button>
             </article>
@@ -135,7 +138,7 @@
                   alt="Affiche du Parrain"
                   width="700"
                   height="1030"
-               >
+                />
                 <span>Détails</span>
               </button>
             </article>
@@ -149,7 +152,7 @@
                   alt="Affiche d’Alien"
                   width="700"
                   height="1030"
-               >
+                />
                 <span>Détails</span>
               </button>
             </article>
@@ -164,7 +167,7 @@
       >
         <h2 id="mystery-title">Mystery</h2>
         <ul class="movie-list" aria-label="Films Mystery">
-          <li>
+          <li class="movie-list__placeholder">
             <article class="movie-card movie-card--placeholder">
               <h3>Films Mystery</h3>
               <p>Voir au-dessus</p>
@@ -180,7 +183,7 @@
       >
         <h2 id="action-title">Films d’action</h2>
         <ul class="movie-list" aria-label="Films d’action">
-          <li>
+          <li class="movie-list__placeholder">
             <article class="movie-card movie-card--placeholder">
               <h3>Films d’action</h3>
               <p>Voir au-dessus</p>
@@ -206,7 +209,7 @@
           <option value="western">Westerns</option>
         </select>
         <ul class="movie-list" aria-label="Films de la catégorie choisie">
-          <li>
+          <li class="movie-list__placeholder">
             <article class="movie-card movie-card--placeholder">
               <h3>Films de la catégorie choisie</h3>
               <p>Voir au-dessus (catégorie choisie : Comédies)</p>
@@ -230,7 +233,7 @@
           alt="Affiche de The Big Lebowski"
           width="700"
           height="1030"
-       >
+        />
         <dl>
           <div>
             <dt>Genres</dt>

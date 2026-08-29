@@ -42,5 +42,16 @@ export function getMovies(params = {}) {
  * @returns {Promise<object>} Détails complets du film.
  */
 export function getMovieDetails(movieId) {
-  return fetchFromApi(`titles/${movieId}/`);
+  return fetchFromApi(`titles/${movieId}`);
+}
+
+/**
+ * Récupère la liste des genres disponibles, utilisée pour remplir le
+ * menu déroulant "Autres".
+ *
+ * @param {Record<string, string | number>} [params] Filtres optionnels (ex: page_size).
+ * @returns {Promise<object>} Page de résultats de genres.
+ */
+export function getGenres(params = {}) {
+  return fetchFromApi("genres/", params);
 }

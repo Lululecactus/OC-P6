@@ -84,7 +84,10 @@ h3 {
   font-weight: 600;
 }
 
-h1 {
+/* Le titre "Meilleur film" est ciblé par son id, pas par le sélecteur h1 :
+   depuis la correction sémantique, h1 = nom du site (masqué visuellement),
+   "Meilleur film" est un h2 comme les autres titres de section. */
+#best-movie-title {
   margin-bottom: 1.7rem;
   font-size: 1.625rem;
   line-height: 1.1;
@@ -113,7 +116,7 @@ h1 {
   text-align: center;
 }
 
-.featured-movie h2 {
+.featured-movie h3 {
   margin-bottom: 0.15rem;
   font-size: 1.625rem;
   line-height: 1.1;
@@ -145,7 +148,14 @@ h1 {
   line-height: 1.1;
 }
 
-.top-rated-section .movie-list {
+/* ===========================================================
+   Grille et cartes films : règles GÉNÉRIQUES, partagées par
+   .top-rated-section, .category-section et .other-category-section.
+   Avant : dupliquées 3 fois sous des sélecteurs différents.
+   Maintenant : un seul jeu de règles, réutilisé partout où la classe
+   .movie-list / .movie-card est posée dans le HTML.
+   =========================================================== */
+.movie-list {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.85rem;
@@ -154,14 +164,14 @@ h1 {
   list-style: none;
 }
 
-.top-rated-section .movie-card {
+.movie-card {
   position: relative;
   overflow: hidden;
   aspect-ratio: 1.03;
   background: #d9d9d9;
 }
 
-.top-rated-section .movie-card h3 {
+.movie-card h3 {
   position: absolute;
   z-index: 2;
   top: 20%;
@@ -173,7 +183,7 @@ h1 {
   line-height: 1.05;
 }
 
-.top-rated-section .movie-card button {
+.movie-card button {
   position: relative;
   display: block;
   width: 100%;
@@ -185,7 +195,7 @@ h1 {
   cursor: pointer;
 }
 
-.top-rated-section .movie-card button::before {
+.movie-card button::before {
   position: absolute;
   z-index: 1;
   inset: 13% 0 auto;
@@ -194,13 +204,13 @@ h1 {
   background: rgb(0 0 0 / 50%);
 }
 
-.top-rated-section .movie-card img {
+.movie-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.top-rated-section .movie-card button span {
+.movie-card button span {
   position: absolute;
   z-index: 2;
   top: 38%;
@@ -215,9 +225,13 @@ h1 {
   line-height: 1.1;
 }
 
-.top-rated-section .show-more-button,
-.category-section .show-more-button,
-.other-category-section .show-more-button {
+.movie-card button:focus-visible {
+  outline: 0.2rem solid #005fcc;
+  outline-offset: 0.2rem;
+}
+
+/* Bouton "Voir plus / Voir moins", commun aux 3 sections */
+.show-more-button {
   display: block;
   min-width: 8.35rem;
   padding: 0.28rem 1.05rem;
@@ -233,6 +247,11 @@ h1 {
   cursor: pointer;
 }
 
+.show-more-button:focus-visible {
+  outline: 0.2rem solid #005fcc;
+  outline-offset: 0.2rem;
+}
+
 .category-section h2,
 .other-category-section label {
   margin-bottom: 1.35rem;
@@ -245,42 +264,28 @@ h1 {
   display: inline-block;
 }
 
-.category-section .movie-list,
-.other-category-section .movie-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.85rem;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.category-section .movie-card--placeholder,
-.other-category-section .movie-card--placeholder {
+/* Carte "placeholder" (en attente des vraies données de l'API) :
+   toujours affichée en pleine largeur (grid-column: 1 / -1), quel que
+   soit le nombre de colonnes de la grille à ce moment-là. */
+.movie-card--placeholder {
   display: grid;
   place-items: center;
-  aspect-ratio: 1.03;
   padding: 1.25rem;
-  background: #d9d9d9;
   text-align: center;
 }
 
-.category-section .movie-card--placeholder h3,
-.other-category-section .movie-card--placeholder h3 {
+.movie-list__placeholder {
+  grid-column: 1 / -1;
+}
+
+.movie-card--placeholder h3 {
   display: none;
 }
 
-.category-section .movie-card--placeholder p,
-.other-category-section .movie-card--placeholder p {
+.movie-card--placeholder p {
   margin: 0;
   font-size: 1.4rem;
   font-weight: 600;
-}
-
-.category-section .show-more-button:focus-visible,
-.other-category-section .show-more-button:focus-visible {
-  outline: 0.2rem solid #005fcc;
-  outline-offset: 0.2rem;
 }
 
 .other-category-section select {
@@ -296,12 +301,6 @@ h1 {
 }
 
 .other-category-section select:focus-visible {
-  outline: 0.2rem solid #005fcc;
-  outline-offset: 0.2rem;
-}
-
-.top-rated-section .movie-card button:focus-visible,
-.top-rated-section .show-more-button:focus-visible {
   outline: 0.2rem solid #005fcc;
   outline-offset: 0.2rem;
 }
@@ -372,12 +371,18 @@ dialog form button:focus-visible {
   outline-offset: 0.2rem;
 }
 
+/* ===========================================================
+   Mobile (< 40rem) : 1 colonne, 2 films visibles par catégorie
+   =========================================================== */
 @media (max-width: 39.99rem) {
-  .top-rated-section .movie-list > li:nth-child(n + 3) {
+  .movie-list > li:nth-child(n + 3) {
     display: none;
   }
 }
 
+/* ===========================================================
+   Tablette (>= 40rem) : 2 colonnes, 4 films visibles par catégorie
+   =========================================================== */
 @media (min-width: 40rem) {
   .site-header {
     width: 38.6875rem;
@@ -417,7 +422,7 @@ dialog form button:focus-visible {
     margin-top: 3.25rem;
   }
 
-  h1 {
+  #best-movie-title {
     margin-bottom: 1.875rem;
     font-size: 2.25rem;
   }
@@ -443,7 +448,7 @@ dialog form button:focus-visible {
     text-align: left;
   }
 
-  .featured-movie h2 {
+  .featured-movie h3 {
     font-size: 2rem;
   }
 
@@ -467,22 +472,20 @@ dialog form button:focus-visible {
     font-size: 1.85rem;
   }
 
-  .category-section .movie-card--placeholder,
-  .other-category-section .movie-card--placeholder {
+  .movie-card--placeholder {
     aspect-ratio: 1.485;
   }
 
-  .category-section .movie-card--placeholder p,
-  .other-category-section .movie-card--placeholder p {
+  .movie-card--placeholder p {
     font-size: 1.75rem;
   }
 
-  .top-rated-section .movie-list {
+  .movie-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.85rem 2.1rem;
   }
 
-  .top-rated-section .movie-list > li:nth-child(n + 5) {
+  .movie-list > li:nth-child(n + 5) {
     display: none;
   }
 
@@ -504,6 +507,9 @@ dialog form button:focus-visible {
   }
 }
 
+/* ===========================================================
+   Ordinateur (>= 64rem) : 3 colonnes, 6 films visibles (pas de bouton)
+   =========================================================== */
 @media (min-width: 64rem) {
   .site-header {
     width: var(--desktop-content-width);
@@ -539,7 +545,7 @@ dialog form button:focus-visible {
     margin-top: 3.8rem;
   }
 
-  h1 {
+  #best-movie-title {
     margin-bottom: 2.5rem;
     font-size: 2.5rem;
   }
@@ -558,7 +564,7 @@ dialog form button:focus-visible {
     padding: 1.5rem 2.5rem;
   }
 
-  .featured-movie h2 {
+  .featured-movie h3 {
     font-size: 2.75rem;
   }
 
@@ -577,38 +583,32 @@ dialog form button:focus-visible {
     font-size: 2.25rem;
   }
 
-  .category-section .movie-card--placeholder,
-  .other-category-section .movie-card--placeholder {
+  .movie-card--placeholder {
     aspect-ratio: 1.51;
   }
 
-  .category-section .show-more-button,
-  .other-category-section .show-more-button {
+  .show-more-button {
     display: none;
   }
 
-  .top-rated-section .movie-list {
+  .movie-list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 2.8rem 2.1rem;
   }
 
-  .top-rated-section .movie-card {
+  .movie-card {
     aspect-ratio: 1;
   }
 
-  .top-rated-section .movie-card h3 {
+  .movie-card h3 {
     left: 1.3rem;
   }
 
-  .top-rated-section .movie-card button span {
+  .movie-card button span {
     right: 0.8rem;
   }
 
-  .top-rated-section .show-more-button {
-    display: none;
-  }
-
-  .top-rated-section .movie-list > li:nth-child(n) {
+  .movie-list > li:nth-child(n) {
     display: block;
   }
 
