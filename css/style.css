@@ -1,13 +1,18 @@
+/* Variables réutilisées pour garder les mêmes dimensions et couleurs
+   dans les différentes parties de la page. */
 :root {
   --brand-color: #61787f;
   --mobile-content-width: 20.5625rem;
   --desktop-content-width: 52.75rem;
 }
 
+/* Le calcul des dimensions inclut ainsi les bordures et les espacements. */
 * {
   box-sizing: border-box;
 }
 
+/* Styles généraux appliqués d'abord au mobile : les media queries situées
+   plus bas adaptent ensuite la page à la tablette et à l'ordinateur. */
 body {
   min-width: 20rem;
   margin: 0;
@@ -16,11 +21,14 @@ body {
   font-family: "Oswald", "Arial Narrow", Arial, sans-serif;
 }
 
+/* Les images restent dans la largeur de leur conteneur et le display block
+   retire le petit espace réservé à la ligne de texte sous une image inline. */
 img {
   display: block;
   max-width: 100%;
 }
 
+/* Le contenu reste accessible aux lecteurs d'écran sans être visible. */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -33,6 +41,7 @@ img {
   border: 0;
 }
 
+/* ============================== En-tête ============================== */
 .site-header {
   display: grid;
   width: min(100%, var(--mobile-content-width));
@@ -58,11 +67,13 @@ img {
   display: none;
 }
 
+/* =========================== Contenu principal ======================= */
 main {
   width: min(calc(100% - 2rem), var(--mobile-content-width));
   margin: 2.25rem auto 2.75rem;
 }
 
+/* Le sélecteur ajoute un espace uniquement entre deux sections voisines. */
 section + section {
   margin-top: 1.875rem;
 }
@@ -84,15 +95,15 @@ h3 {
   font-weight: 600;
 }
 
-/* Le titre "Meilleur film" est ciblé par son id, pas par le sélecteur h1 :
-   depuis la correction sémantique, h1 = nom du site (masqué visuellement),
-   "Meilleur film" est un h2 comme les autres titres de section. */
+/* Le h1 correspond au nom du site. « Meilleur film » est donc un h2 qui
+   possède son propre style grâce à cet identifiant. */
 #best-movie-title {
   margin-bottom: 1.7rem;
   font-size: 1.625rem;
   line-height: 1.1;
 }
 
+/* ============================ Film vedette =========================== */
 .featured-movie {
   overflow: hidden;
   padding: 1rem;
@@ -108,6 +119,7 @@ h3 {
 }
 
 .featured-movie > div {
+  /* Flexbox empile les textes et le bouton dans la partie descriptive. */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -148,13 +160,9 @@ h3 {
   line-height: 1.1;
 }
 
-/* ===========================================================
-   Grille et cartes films : règles GÉNÉRIQUES, partagées par
-   .top-rated-section, .category-section et .other-category-section.
-   Avant : dupliquées 3 fois sous des sélecteurs différents.
-   Maintenant : un seul jeu de règles, réutilisé partout où la classe
-   .movie-list / .movie-card est posée dans le HTML.
-   =========================================================== */
+/* ======================== Listes et cartes ===========================
+   Les mêmes classes servent à toutes les catégories. La grille commence
+   sur une colonne en mobile, puis passe à deux et trois colonnes. */
 .movie-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -165,6 +173,7 @@ h3 {
 }
 
 .movie-card {
+  /* position: relative sert de repère aux textes placés sur l'affiche. */
   position: relative;
   overflow: hidden;
   aspect-ratio: 1.03;
@@ -196,6 +205,7 @@ h3 {
 }
 
 .movie-card button::before {
+  /* Ce pseudo-élément dessine le rectangle noir transparent de la maquette. */
   position: absolute;
   z-index: 1;
   inset: 13% 0 auto;
@@ -230,7 +240,7 @@ h3 {
   outline-offset: 0.2rem;
 }
 
-/* Bouton "Voir plus / Voir moins", commun aux 3 sections */
+/* Bouton commun aux catégories. Son comportement sera ajouté à l'étape 7. */
 .show-more-button {
   display: block;
   min-width: 8.35rem;
@@ -264,9 +274,8 @@ h3 {
   display: inline-block;
 }
 
-/* Carte "placeholder" (en attente des vraies données de l'API) :
-   toujours affichée en pleine largeur (grid-column: 1 / -1), quel que
-   soit le nombre de colonnes de la grille à ce moment-là. */
+/* Les placeholders occupent toute la grille tant que les vraies données
+   des catégories ne sont pas encore chargées. */
 .movie-card--placeholder {
   display: grid;
   place-items: center;
@@ -305,7 +314,9 @@ h3 {
   outline-offset: 0.2rem;
 }
 
+/* ======================= Fenêtre de détails ========================== */
 dialog {
+  /* La hauteur maximale maintient la modale à l'intérieur de l'écran. */
   width: min(calc(100% - 2rem), 31.625rem);
   max-height: calc(100dvh - 2rem);
   padding: 2rem;
@@ -316,6 +327,7 @@ dialog {
 }
 
 dialog::backdrop {
+  /* Le fond assombri permet de garder l'attention sur la modale. */
   background: rgb(0 0 0 / 60%);
 }
 
@@ -371,18 +383,14 @@ dialog form button:focus-visible {
   outline-offset: 0.2rem;
 }
 
-/* ===========================================================
-   Mobile (< 40rem) : 1 colonne, 2 films visibles par catégorie
-   =========================================================== */
+/* Mobile : une colonne et deux films visibles par catégorie. */
 @media (max-width: 39.99rem) {
   .movie-list > li:nth-child(n + 3) {
     display: none;
   }
 }
 
-/* ===========================================================
-   Tablette (>= 40rem) : 2 colonnes, 4 films visibles par catégorie
-   =========================================================== */
+/* Tablette : deux colonnes et quatre films visibles par catégorie. */
 @media (min-width: 40rem) {
   .site-header {
     width: 38.6875rem;
@@ -507,9 +515,8 @@ dialog form button:focus-visible {
   }
 }
 
-/* ===========================================================
-   Ordinateur (>= 64rem) : 3 colonnes, 6 films visibles (pas de bouton)
-   =========================================================== */
+/* Ordinateur : trois colonnes, les six films visibles et aucun bouton
+   « Voir plus », puisqu'il ne reste aucun film masqué. */
 @media (min-width: 64rem) {
   .site-header {
     width: var(--desktop-content-width);

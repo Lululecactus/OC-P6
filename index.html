@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="css/style.css" />
     <title>JustStreamIt - Vidéos à la demande</title>
     <script type="module" src="./js/main.js"></script>
-    <script type="module" src="./js/api.js"></script>
   </head>
 
   <body>
@@ -39,6 +38,12 @@
     </header>
 
     <main>
+      <p
+        id="movies-loading-status"
+        class="visually-hidden"
+        aria-live="polite"
+      ></p>
+
       <section
         id="best-movie"
         class="featured-section"
@@ -219,6 +224,17 @@
         <button class="show-more-button" type="button">Voir plus</button>
       </section>
     </main>
+    <template id="movie-card-template">
+      <li>
+        <article class="movie-card">
+          <h3></h3>
+          <button type="button">
+            <img alt="" width="700" height="1030" />
+            <span>Détails</span>
+          </button>
+        </article>
+      </li>
+    </template>
 
     <dialog id="movie-details" aria-labelledby="movie-details-title">
       <article>
