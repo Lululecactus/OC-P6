@@ -1,7 +1,11 @@
-import { getMovies, getMovieDetails } from "./api.js";
+import { getMovies, getMovieDetails, getGenres } from "./api.js";
 
 // Chaque liste doit contenir six films d'après le cahier des charges.
 const MOVIES_PER_CATEGORY = 6;
+// L'API contient actuellement 25 genres et accepte jusqu'à 50 résultats.
+const GENRES_PAGE_SIZE = 50;
+// La catégorie dynamique commencera sur un genre différent des catégories fixes.
+const DEFAULT_DYNAMIC_GENRE = "Comedy";
 
 // Cette image SVG est créée directement dans le navigateur. Elle évite
 // d'afficher une icône cassée lorsqu'une affiche distante est indisponible.
@@ -153,6 +157,33 @@ async function loadMovieCategory(genre, listSelector) {
 }
 
 /**
+ * Récupère les genres de l'API et construit les options du menu « Autres ».
+ * Les options présentes dans le HTML restent disponibles comme contenu de
+ * secours tant que la réponse complète n'a pas été validée.
+ */
+async function loadGenres() {
+  const genreSelect = document.querySelector("#genre-select");
+  const genresPage = await getGenres({ page_size: GENRES_PAGE_SIZE });
+  const genres = genresPage.results;
+
+  if (!Array.isArray(genres) || genres.length === 0) {
+    throw new Error("Aucun genre retourné par l'API.");
+  }
+
+  const options = document.createDocumentFragment();
+
+  for (const genre of genres) {
+    const option = document.createElement("option");
+    option.value = genre.name;
+    option.textContent = genre.name;
+    options.append(option);
+  }
+
+  genreSelect.replaceChildren(options);
+  genreSelect.value = DEFAULT_DYNAMIC_GENRE;
+}
+
+/**
  * Lance les chargements nécessaires à l'affichage initial de la page.
  * Promise.all permet d'effectuer les requêtes indépendantes en parallèle.
  */
@@ -165,6 +196,7 @@ async function initializeHomepage() {
       loadHomepageMovies(),
       loadMovieCategory("Mystery", "#mystery-movie-list"),
       loadMovieCategory("Action", "#action-movie-list"),
+      loadGenres(),
     ]);
 
     loadingStatus.textContent = "";
