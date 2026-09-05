@@ -152,6 +152,15 @@ h3 {
   font-weight: 500;
   line-height: 1.1;
   cursor: pointer;
+  transition:
+    background-color 160ms ease-out,
+    box-shadow 160ms ease-out,
+    transform 160ms ease-out;
+}
+
+.featured-movie button:focus-visible {
+  outline: 0.2rem solid #005fcc;
+  outline-offset: 0.2rem;
 }
 
 .top-rated-section h2 {
@@ -212,12 +221,14 @@ h3 {
   height: 41.25%;
   content: "";
   background: rgb(0 0 0 / 50%);
+  transition: background-color 200ms ease-out;
 }
 
 .movie-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 240ms ease-out;
 }
 
 .movie-card button span {
@@ -233,11 +244,18 @@ h3 {
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.1;
+  transition:
+    background-color 160ms ease-out,
+    transform 160ms ease-out;
 }
 
 .movie-card button:focus-visible {
   outline: 0.2rem solid #005fcc;
-  outline-offset: 0.2rem;
+  outline-offset: -0.3rem;
+}
+
+.movie-card button:focus-visible span {
+  background: #fa0b0b;
 }
 
 /* Bouton commun aux catégories. Son comportement sera ajouté à l'étape 7. */
@@ -255,6 +273,10 @@ h3 {
   font-weight: 500;
   line-height: 1.1;
   cursor: pointer;
+  transition:
+    background-color 160ms ease-out,
+    box-shadow 160ms ease-out,
+    transform 160ms ease-out;
 }
 
 .show-more-button:focus-visible {
@@ -327,10 +349,26 @@ dialog {
   font-family: inherit;
   font-size: 0.8rem;
   line-height: 1.4;
+  opacity: 0;
+  transform: translateY(0.75rem) scale(0.9);
+  transform-origin: center;
+  transition:
+    opacity 200ms ease-out,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+dialog.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 dialog::backdrop {
   /* Le fond assombri permet de garder l'attention sur la modale. */
+  background: rgb(0 0 0 / 0%);
+  transition: background 200ms ease-out;
+}
+
+dialog.is-visible::backdrop {
   background: rgb(0 0 0 / 60%);
 }
 
@@ -358,12 +396,18 @@ dialog form button {
   background: transparent;
   font: inherit;
   cursor: pointer;
+  transition:
+    color 160ms ease-out,
+    background-color 160ms ease-out,
+    box-shadow 160ms ease-out,
+    transform 160ms ease-out;
 }
 
 .close-icon {
   font-size: 2.5rem;
   font-weight: 700;
   line-height: 1;
+  transition: transform 160ms ease-out;
 }
 
 .close-label {
@@ -412,6 +456,67 @@ dialog h3 {
 dialog form button:focus-visible {
   outline: 0.2rem solid #005fcc;
   outline-offset: 0.2rem;
+}
+
+/* Les effets de survol sont réservés aux souris et aux trackpads. */
+@media (hover: hover) {
+  .featured-movie button:hover,
+  .show-more-button:hover {
+    background: #c90808;
+    box-shadow: 0 0.3rem 0.65rem rgb(0 0 0 / 25%);
+    transform: translateY(-0.12rem);
+  }
+
+  .movie-card:hover button::before {
+    background: rgb(0 0 0 / 62%);
+  }
+
+  .movie-card:hover img {
+    transform: scale(1.035);
+  }
+
+  .movie-card:hover button span {
+    background: #fa0b0b;
+    transform: translateY(-0.12rem);
+  }
+
+  dialog form button:hover {
+    color: #c90808;
+  }
+
+  dialog form button:hover .close-icon {
+    transform: scale(1.12) rotate(8deg);
+  }
+}
+
+.featured-movie button:active,
+.show-more-button:active,
+dialog form button:active {
+  box-shadow: none;
+  transform: scale(0.96);
+}
+
+.movie-card button:active img {
+  transform: scale(1.01);
+}
+
+.movie-card button:active span {
+  transform: scale(0.96);
+}
+
+/* Le choix d'accessibilité de l'utilisateur prime sur l'effet visuel. */
+@media (prefers-reduced-motion: reduce) {
+  dialog,
+  dialog::backdrop,
+  .featured-movie button,
+  .show-more-button,
+  .movie-card button::before,
+  .movie-card img,
+  .movie-card button span,
+  dialog form button,
+  .close-icon {
+    transition: none;
+  }
 }
 
 /* Mobile : une colonne et deux films visibles par catégorie. */
@@ -718,5 +823,14 @@ dialog form button:focus-visible {
 
   .close-label {
     display: inline;
+  }
+}
+
+@media (min-width: 64rem) and (hover: hover) {
+  dialog form button:hover {
+    color: #fff;
+    background: #c90808;
+    box-shadow: 0 0.3rem 0.65rem rgb(0 0 0 / 25%);
+    transform: translateY(-0.12rem);
   }
 }

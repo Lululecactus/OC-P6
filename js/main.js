@@ -6,6 +6,8 @@ const MOVIES_PER_CATEGORY = 6;
 const GENRES_PAGE_SIZE = 50;
 // La catégorie dynamique commencera sur un genre différent des catégories fixes.
 const DEFAULT_DYNAMIC_GENRE = "Comedy";
+// Cette valeur doit rester identique à la durée des transitions CSS.
+const MODAL_ANIMATION_DURATION = 260;
 
 // Cette image SVG est créée directement dans le navigateur. Elle évite
 // d'afficher une icône cassée lorsqu'une affiche distante est indisponible.
@@ -353,6 +355,32 @@ function renderMovieDetails(movie) {
 }
 
 /**
+ * Joue l'animation de sortie avant de fermer réellement la modale.
+ * Sans ce court délai, close() retirerait immédiatement le dialog de l'écran
+ * et la transition CSS n'aurait pas le temps d'être visible.
+ *
+ * @param {HTMLDialogElement} dialog Fenêtre de détails ouverte.
+ */
+function closeMovieDetailsDialog(dialog) {
+  if (!dialog.open || dialog.classList.contains("is-closing")) {
+    return;
+  }
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const closingDelay = prefersReducedMotion ? 0 : MODAL_ANIMATION_DURATION;
+
+  dialog.classList.add("is-closing");
+  dialog.classList.remove("is-visible");
+
+  window.setTimeout(() => {
+    dialog.close();
+    dialog.classList.remove("is-closing");
+  }, closingDelay);
+}
+
+/**
  * Récupère le détail d'un film puis ouvre la fenêtre modale native.
  *
  * @param {string} movieId Identifiant stocké dans data-movie-id.
@@ -366,7 +394,13 @@ async function openMovieDetails(movieId) {
 
     renderMovieDetails(movie);
     const dialog = document.querySelector("#movie-details");
+    dialog.classList.remove("is-visible", "is-closing");
     dialog.showModal();
+    // L'ajout de la classe à l'image suivante laisse au navigateur le temps
+    // d'afficher l'état initial réduit avant de lancer la transition.
+    window.requestAnimationFrame(() => {
+      dialog.classList.add("is-visible");
+    });
     // Le focus reste en haut de la fiche au lieu de faire défiler la modale
     // jusqu'au bouton de fermeture placé en bas sur ordinateur.
     dialog.focus({ preventScroll: true });
@@ -386,6 +420,7 @@ async function openMovieDetails(movieId) {
 function setupMovieDetailsDialog() {
   const mainContent = document.querySelector("main");
   const dialog = document.querySelector("#movie-details");
+  const closeButton = dialog.querySelector("form button");
 
   mainContent.addEventListener("click", (event) => {
     const clickedElement = event.target;
@@ -394,7 +429,10 @@ function setupMovieDetailsDialog() {
       return;
     }
 
-    const detailsButton = clickedElement.closest("[data-movie-id]");
+    const movieCard = clickedElement.closest(".movie-card");
+    const detailsButton =
+      clickedElement.closest("[data-movie-id]") ||
+      movieCard?.querySelector("[data-movie-id]");
 
     if (!detailsButton) {
       return;
@@ -414,8 +452,19 @@ function setupMovieDetailsDialog() {
     // Le fond assombri appartient techniquement à l'élément dialog.
     // Les coordonnées permettent de le distinguer du panneau blanc visible.
     if (event.target === dialog && isOutsideDialog) {
-      dialog.close();
+      closeMovieDetailsDialog(dialog);
     }
+  });
+
+  closeButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    closeMovieDetailsDialog(dialog);
+  });
+
+  // L'évènement cancel est déclenché par la touche Échap.
+  dialog.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeMovieDetailsDialog(dialog);
   });
 }
 
