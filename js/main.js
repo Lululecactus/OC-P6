@@ -191,6 +191,71 @@ async function loadGenres() {
 }
 
 /**
+ * Charge les films du genre choisi dans la dernière section de la page.
+ * La section revient à son état replié afin de respecter le nombre de
+ * cartes prévu pour chaque taille d'écran.
+ *
+ * @param {string} genre Genre sélectionné dans le menu.
+ */
+async function loadDynamicMovieCategory(genre) {
+  const movieSection = document.querySelector(".other-category-section");
+  const movieList = document.querySelector("#other-movie-list");
+  const sectionTitle = document.querySelector("#other-category-title");
+  const showMoreButton = movieSection.querySelector(".show-more-button");
+
+  await loadMovieCategory(genre, "#other-movie-list");
+
+  sectionTitle.textContent = `Autres films : ${genre}`;
+  movieList.setAttribute("aria-label", `Films du genre ${genre}`);
+  movieSection.classList.remove("is-expanded");
+  showMoreButton.textContent = "Voir plus";
+  showMoreButton.setAttribute("aria-expanded", "false");
+}
+
+/**
+ * Construit le menu des genres puis affiche sa catégorie par défaut.
+ * L'ordre est important : la valeur sélectionnée ne peut être définie
+ * qu'une fois les options reçues depuis l'API.
+ */
+async function loadGenresAndDefaultCategory() {
+  const genreSelect = document.querySelector("#genre-select");
+  genreSelect.disabled = true;
+
+  try {
+    await loadGenres();
+    await loadDynamicMovieCategory(DEFAULT_DYNAMIC_GENRE);
+  } finally {
+    genreSelect.disabled = false;
+  }
+}
+
+/**
+ * Recharge la dernière grille lorsque l'utilisateur choisit un genre.
+ * Le menu est temporairement désactivé pour empêcher deux requêtes
+ * concurrentes de remplacer les cartes dans le mauvais ordre.
+ */
+function setupGenreSelection() {
+  const genreSelect = document.querySelector("#genre-select");
+  const loadingStatus = document.querySelector("#movies-loading-status");
+
+  genreSelect.addEventListener("change", async () => {
+    genreSelect.disabled = true;
+    loadingStatus.textContent =
+      `Chargement des films du genre ${genreSelect.value}.`;
+
+    try {
+      await loadDynamicMovieCategory(genreSelect.value);
+      loadingStatus.textContent = "";
+    } catch {
+      loadingStatus.textContent =
+        "Impossible de charger les films du genre sélectionné.";
+    } finally {
+      genreSelect.disabled = false;
+    }
+  });
+}
+
+/**
  * Active les boutons « Voir plus / Voir moins » de chaque catégorie.
  * La classe est appliquée à la section complète afin que le CSS puisse
  * réafficher les cartes masquées sans modifier leur style directement en JS.
@@ -362,6 +427,7 @@ async function initializeHomepage() {
   const loadingStatus = document.querySelector("#movies-loading-status");
   setupShowMoreButtons();
   setupMovieDetailsDialog();
+  setupGenreSelection();
   loadingStatus.textContent = "Chargement des films en cours.";
 
   try {
@@ -369,7 +435,7 @@ async function initializeHomepage() {
       loadHomepageMovies(),
       loadMovieCategory("Mystery", "#mystery-movie-list"),
       loadMovieCategory("Action", "#action-movie-list"),
-      loadGenres(),
+      loadGenresAndDefaultCategory(),
     ]);
 
     loadingStatus.textContent = "";
