@@ -1,7 +1,7 @@
 import { getMovies, getMovieDetails } from "./api.js";
 
-// Une catégorie doit contenir six films d'après le cahier des charges.
-const TOP_RATED_MOVIES_COUNT = 6;
+// Chaque liste doit contenir six films d'après le cahier des charges.
+const MOVIES_PER_CATEGORY = 6;
 
 // Cette image SVG est créée directement dans le navigateur. Elle évite
 // d'afficher une icône cassée lorsqu'une affiche distante est indisponible.
@@ -101,42 +101,78 @@ function renderBestMovie(movie) {
  * six autres alimentent la grille « Films les mieux notés ».
  */
 async function loadHomepageMovies() {
-  const loadingStatus = document.querySelector("#movies-loading-status");
   const topRatedList = document.querySelector(
     ".top-rated-section .movie-list",
   );
 
+  // Le signe moins devant imdb_score demande un tri décroissant.
+  const topMoviesPage = await getMovies({
+    sort_by: "-imdb_score",
+    page_size: MOVIES_PER_CATEGORY + 1,
+  });
+  const allMovies = topMoviesPage.results;
+
+  if (
+    !Array.isArray(allMovies) ||
+    allMovies.length < MOVIES_PER_CATEGORY + 1
+  ) {
+    throw new Error("La liste des films les mieux notés est incomplète.");
+  }
+
+  const bestMovieSummary = allMovies[0];
+  const topRatedMovies = allMovies.slice(1, MOVIES_PER_CATEGORY + 1);
+  const bestMovieDetails = await getMovieDetails(bestMovieSummary.id);
+
+  // Le DOM n'est mis à jour qu'une fois les données nécessaires récupérées.
+  renderBestMovie(bestMovieDetails);
+  renderMovieList(topRatedList, topRatedMovies);
+}
+
+/**
+ * Charge les six films les mieux notés d'un genre dans la liste demandée.
+ * Le genre et le sélecteur sont passés en paramètres pour pouvoir réutiliser
+ * cette fonction avec les autres catégories de la page.
+ *
+ * @param {string} genre Genre attendu par l'API, par exemple "Mystery".
+ * @param {string} listSelector Sélecteur CSS de la liste à remplir.
+ */
+async function loadMovieCategory(genre, listSelector) {
+  const movieList = document.querySelector(listSelector);
+  const categoryPage = await getMovies({
+    genre,
+    sort_by: "-imdb_score",
+    page_size: MOVIES_PER_CATEGORY,
+  });
+  const movies = categoryPage.results;
+
+  if (!Array.isArray(movies) || movies.length < MOVIES_PER_CATEGORY) {
+    throw new Error(`La liste de la catégorie ${genre} est incomplète.`);
+  }
+
+  renderMovieList(movieList, movies);
+}
+
+/**
+ * Lance les chargements nécessaires à l'affichage initial de la page.
+ * Promise.all permet d'effectuer les requêtes indépendantes en parallèle.
+ */
+async function initializeHomepage() {
+  const loadingStatus = document.querySelector("#movies-loading-status");
   loadingStatus.textContent = "Chargement des films en cours.";
 
   try {
-    // Le signe moins devant imdb_score demande un tri décroissant.
-    const topMoviesPage = await getMovies({
-      sort_by: "-imdb_score",
-      page_size: TOP_RATED_MOVIES_COUNT + 1,
-    });
-    const allMovies = topMoviesPage.results;
-
-    const bestMovieSummary = allMovies[0];
-    const topRatedMovies = allMovies.slice(1, TOP_RATED_MOVIES_COUNT + 1);
-
-    if (!bestMovieSummary) {
-      throw new Error("Aucun film retourné par l'API.");
-    }
-
-    const bestMovieDetails = await getMovieDetails(bestMovieSummary.id);
-
-    // Le DOM n'est mis à jour qu'une fois les données nécessaires récupérées.
-    renderBestMovie(bestMovieDetails);
-    renderMovieList(topRatedList, topRatedMovies);
+    await Promise.all([
+      loadHomepageMovies(),
+      loadMovieCategory("Mystery", "#mystery-movie-list"),
+    ]);
 
     loadingStatus.textContent = "";
-  } catch (error) {
-    console.error("Erreur lors du chargement des films :", error);
-    // En cas d'échec, les contenus présents dans le HTML ne sont pas remplacés.
+  } catch {
+    // Les contenus de secours restent dans le HTML si une requête échoue.
     loadingStatus.textContent =
-      "Impossible de mettre à jour les films. Le contenu de secours reste affiché.";
+      "Impossible de mettre à jour certains films. Le contenu de secours reste affiché.";
   }
 }
 
 // Les requêtes démarrent lorsque la structure HTML est entièrement disponible.
-document.addEventListener("DOMContentLoaded", loadHomepageMovies);
+document.addEventListener("DOMContentLoaded", initializeHomepage);
