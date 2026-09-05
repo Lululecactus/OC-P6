@@ -164,6 +164,7 @@ async function initializeHomepage() {
     await Promise.all([
       loadHomepageMovies(),
       loadMovieCategory("Mystery", "#mystery-movie-list"),
+      loadMovieCategory("Action", "#action-movie-list"),
     ]);
 
     loadingStatus.textContent = "";
