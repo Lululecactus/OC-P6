@@ -276,61 +276,58 @@
       </li>
     </template>
 
-    <dialog id="movie-details" aria-labelledby="movie-details-title">
+    <dialog
+      id="movie-details"
+      aria-labelledby="movie-details-title"
+      tabindex="-1"
+    >
       <article>
-        <form method="dialog">
-          <button type="submit" aria-label="Fermer la fenêtre de détails">
-            ×
-          </button>
-        </form>
-        <h2 id="movie-details-title">The Big Lebowski</h2>
+        <div class="movie-details-heading">
+          <h2 id="movie-details-title">The Big Lebowski</h2>
+          <p>
+            <span id="movie-details-date">1998</span> -
+            <span id="movie-details-genres">Comedy, Crime</span>
+          </p>
+          <p>
+            <span id="movie-details-rated">R</span> -
+            <span id="movie-details-duration">117 minutes</span>
+            (<span id="movie-details-countries">États-Unis</span>)
+          </p>
+          <p>
+            <strong>Score IMDb :</strong>
+            <span id="movie-details-score">8,1 / 10</span>
+          </p>
+          <p>
+            <strong>Recettes au box-office :</strong>
+            <span id="movie-details-box-office">46 189 568 USD</span>
+          </p>
+          <section class="movie-details-directors">
+            <h3>Réalisé par :</h3>
+            <p id="movie-details-directors">Joel et Ethan Coen</p>
+          </section>
+        </div>
+        <p id="movie-details-description">
+          La description complète du film sera chargée depuis l’API OCMovies.
+        </p>
         <img
+          id="movie-details-poster"
           src="assets/images/the-big-lebowski.png"
           alt="Affiche de The Big Lebowski"
           width="700"
           height="1030"
         />
-        <dl>
-          <div>
-            <dt>Genres</dt>
-            <dd>Comedy, Crime</dd>
-          </div>
-          <div>
-            <dt>Date de sortie</dt>
-            <dd>1998</dd>
-          </div>
-          <div>
-            <dt>Classification</dt>
-            <dd>R</dd>
-          </div>
-          <div>
-            <dt>Score IMDb</dt>
-            <dd>8,1 / 10</dd>
-          </div>
-          <div>
-            <dt>Réalisateurs</dt>
-            <dd>Joel et Ethan Coen</dd>
-          </div>
-          <div>
-            <dt>Acteurs</dt>
-            <dd>Jeff Bridges, John Goodman, Julianne Moore</dd>
-          </div>
-          <div>
-            <dt>Durée</dt>
-            <dd>117 minutes</dd>
-          </div>
-          <div>
-            <dt>Pays d’origine</dt>
-            <dd>États-Unis</dd>
-          </div>
-          <div>
-            <dt>Recettes au box-office</dt>
-            <dd>46 189 568 USD</dd>
-          </div>
-        </dl>
-        <p>
-          La description complète du film sera chargée depuis l’API OCMovies.
-        </p>
+        <section class="movie-details-actors">
+          <h3>Avec :</h3>
+          <p id="movie-details-actors">
+            Jeff Bridges, John Goodman, Julianne Moore
+          </p>
+        </section>
+        <form method="dialog">
+          <button type="submit" aria-label="Fermer la fenêtre de détails">
+            <span class="close-icon" aria-hidden="true">×</span>
+            <span class="close-label">Fermer</span>
+          </button>
+        </form>
       </article>
     </dialog>
   </body>

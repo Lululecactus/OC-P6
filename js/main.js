@@ -97,6 +97,13 @@ function renderBestMovie(movie) {
 
   const summaryEl = featuredMovie.querySelector("p");
   summaryEl.textContent = movie.description;
+
+  const detailsButton = featuredMovie.querySelector("button");
+  detailsButton.dataset.movieId = movie.id;
+  detailsButton.setAttribute(
+    "aria-label",
+    `Voir les détails de ${movie.title}`,
+  );
 }
 
 /**
@@ -208,12 +215,153 @@ function setupShowMoreButtons() {
 }
 
 /**
+ * Retourne une liste lisible ou un texte de remplacement si elle est vide.
+ *
+ * @param {string[]} values Valeurs retournées par l'API.
+ * @returns {string} Valeurs séparées par des virgules.
+ */
+function formatList(values) {
+  return Array.isArray(values) && values.length > 0
+    ? values.join(", ")
+    : "Non renseigné";
+}
+
+/**
+ * Formate une recette de box-office avec des séparateurs adaptés au français.
+ * Le revenu mondial est prioritaire ; le revenu américain sert de secours.
+ *
+ * @param {object} movie Détail complet d'un film.
+ * @returns {string} Recette formatée ou texte de remplacement.
+ */
+function formatBoxOffice(movie) {
+  const income = movie.worldwide_gross_income ?? movie.usa_gross_income;
+
+  if (income === null || income === undefined) {
+    return "Non renseigné";
+  }
+
+  return `${new Intl.NumberFormat("fr-FR").format(income)} USD`;
+}
+
+/**
+ * Injecte le détail complet d'un film dans la fenêtre modale.
+ * textContent est utilisé pour ne jamais interpréter les données de l'API
+ * comme du code HTML.
+ *
+ * @param {object} movie Détail complet du film.
+ */
+function renderMovieDetails(movie) {
+  const dialog = document.querySelector("#movie-details");
+  const poster = dialog.querySelector("#movie-details-poster");
+
+  dialog.querySelector("#movie-details-title").textContent = movie.title;
+  setPosterImage(poster, movie.image_url);
+  poster.alt = `Affiche de ${movie.title}`;
+
+  dialog.querySelector("#movie-details-genres").textContent = formatList(
+    movie.genres,
+  );
+  dialog.querySelector("#movie-details-date").textContent =
+    movie.date_published || "Non renseignée";
+  dialog.querySelector("#movie-details-rated").textContent =
+    movie.rated || "Non renseignée";
+  dialog.querySelector("#movie-details-score").textContent =
+    movie.imdb_score !== null && movie.imdb_score !== undefined
+      ? `${movie.imdb_score} / 10`
+      : "Non renseigné";
+  dialog.querySelector("#movie-details-directors").textContent = formatList(
+    movie.directors,
+  );
+  dialog.querySelector("#movie-details-actors").textContent = formatList(
+    movie.actors,
+  );
+  dialog.querySelector("#movie-details-duration").textContent = movie.duration
+    ? `${movie.duration} minutes`
+    : "Non renseignée";
+  dialog.querySelector("#movie-details-countries").textContent = formatList(
+    movie.countries,
+  );
+  dialog.querySelector("#movie-details-box-office").textContent =
+    formatBoxOffice(movie);
+  dialog.querySelector("#movie-details-description").textContent =
+    movie.long_description || movie.description || "Résumé non renseigné.";
+}
+
+/**
+ * Récupère le détail d'un film puis ouvre la fenêtre modale native.
+ *
+ * @param {string} movieId Identifiant stocké dans data-movie-id.
+ */
+async function openMovieDetails(movieId) {
+  const loadingStatus = document.querySelector("#movies-loading-status");
+
+  try {
+    loadingStatus.textContent = "Chargement des détails du film.";
+    const movie = await getMovieDetails(movieId);
+
+    renderMovieDetails(movie);
+    const dialog = document.querySelector("#movie-details");
+    dialog.showModal();
+    // Le focus reste en haut de la fiche au lieu de faire défiler la modale
+    // jusqu'au bouton de fermeture placé en bas sur ordinateur.
+    dialog.focus({ preventScroll: true });
+    dialog.scrollTop = 0;
+    loadingStatus.textContent = "";
+  } catch {
+    loadingStatus.textContent =
+      "Impossible de charger les informations de ce film.";
+  }
+}
+
+/**
+ * Écoute les clics dans le contenu principal de la page.
+ * La délégation d'évènement fonctionne aussi avec les cartes ajoutées après
+ * le chargement initial, car l'écouteur est placé sur l'élément main.
+ */
+function setupMovieDetailsDialog() {
+  const mainContent = document.querySelector("main");
+  const dialog = document.querySelector("#movie-details");
+
+  mainContent.addEventListener("click", (event) => {
+    const clickedElement = event.target;
+
+    if (!(clickedElement instanceof Element)) {
+      return;
+    }
+
+    const detailsButton = clickedElement.closest("[data-movie-id]");
+
+    if (!detailsButton) {
+      return;
+    }
+
+    openMovieDetails(detailsButton.dataset.movieId);
+  });
+
+  dialog.addEventListener("click", (event) => {
+    const dialogBounds = dialog.getBoundingClientRect();
+    const isOutsideDialog =
+      event.clientX < dialogBounds.left ||
+      event.clientX > dialogBounds.right ||
+      event.clientY < dialogBounds.top ||
+      event.clientY > dialogBounds.bottom;
+
+    // Le fond assombri appartient techniquement à l'élément dialog.
+    // Les coordonnées permettent de le distinguer du panneau blanc visible.
+    if (event.target === dialog && isOutsideDialog) {
+      dialog.close();
+    }
+  });
+}
+
+/**
  * Lance les chargements nécessaires à l'affichage initial de la page.
  * Promise.all permet d'effectuer les requêtes indépendantes en parallèle.
  */
 async function initializeHomepage() {
   const loadingStatus = document.querySelector("#movies-loading-status");
   setupShowMoreButtons();
+  setupMovieDetailsDialog();
   loadingStatus.textContent = "Chargement des films en cours.";
 
   try {
