@@ -388,6 +388,11 @@ dialog form button:focus-visible {
   .movie-list > li:nth-child(n + 3) {
     display: none;
   }
+
+  /* La classe ajoutée par JavaScript réaffiche les quatre films masqués. */
+  .movie-section.is-expanded .movie-list > li {
+    display: block;
+  }
 }
 
 /* Tablette : deux colonnes et quatre films visibles par catégorie. */
@@ -495,6 +500,11 @@ dialog form button:focus-visible {
 
   .movie-list > li:nth-child(n + 5) {
     display: none;
+  }
+
+  /* Sur tablette, l'extension réaffiche les deux derniers films. */
+  .movie-section.is-expanded .movie-list > li {
+    display: block;
   }
 
   dialog article {

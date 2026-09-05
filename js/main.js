@@ -184,11 +184,36 @@ async function loadGenres() {
 }
 
 /**
+ * Active les boutons « Voir plus / Voir moins » de chaque catégorie.
+ * La classe est appliquée à la section complète afin que le CSS puisse
+ * réafficher les cartes masquées sans modifier leur style directement en JS.
+ */
+function setupShowMoreButtons() {
+  const showMoreButtons = document.querySelectorAll(".show-more-button");
+
+  for (const button of showMoreButtons) {
+    button.addEventListener("click", () => {
+      const movieSection = button.closest(".movie-section");
+
+      if (!movieSection) {
+        return;
+      }
+
+      const isExpanded = movieSection.classList.toggle("is-expanded");
+
+      button.textContent = isExpanded ? "Voir moins" : "Voir plus";
+      button.setAttribute("aria-expanded", String(isExpanded));
+    });
+  }
+}
+
+/**
  * Lance les chargements nécessaires à l'affichage initial de la page.
  * Promise.all permet d'effectuer les requêtes indépendantes en parallèle.
  */
 async function initializeHomepage() {
   const loadingStatus = document.querySelector("#movies-loading-status");
+  setupShowMoreButtons();
   loadingStatus.textContent = "Chargement des films en cours.";
 
   try {

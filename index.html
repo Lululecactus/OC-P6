@@ -71,7 +71,7 @@
         aria-labelledby="top-rated-title"
       >
         <h2 id="top-rated-title">Films les mieux notés</h2>
-        <ul class="movie-list">
+        <ul id="top-rated-movie-list" class="movie-list">
           <li>
             <article class="movie-card">
               <h3>Titanic</h3>
@@ -163,7 +163,14 @@
             </article>
           </li>
         </ul>
-        <button class="show-more-button" type="button">Voir plus</button>
+        <button
+          class="show-more-button"
+          type="button"
+          aria-controls="top-rated-movie-list"
+          aria-expanded="false"
+        >
+          Voir plus
+        </button>
       </section>
 
       <section
@@ -183,7 +190,14 @@
             </article>
           </li>
         </ul>
-        <button class="show-more-button" type="button">Voir plus</button>
+        <button
+          class="show-more-button"
+          type="button"
+          aria-controls="mystery-movie-list"
+          aria-expanded="false"
+        >
+          Voir plus
+        </button>
       </section>
 
       <section
@@ -203,7 +217,14 @@
             </article>
           </li>
         </ul>
-        <button class="show-more-button" type="button">Voir plus</button>
+        <button
+          class="show-more-button"
+          type="button"
+          aria-controls="action-movie-list"
+          aria-expanded="false"
+        >
+          Voir plus
+        </button>
       </section>
 
       <section
@@ -221,7 +242,11 @@
           <option value="sci-fi">Science-fiction</option>
           <option value="western">Westerns</option>
         </select>
-        <ul class="movie-list" aria-label="Films de la catégorie choisie">
+        <ul
+          id="other-movie-list"
+          class="movie-list"
+          aria-label="Films de la catégorie choisie"
+        >
           <li class="movie-list__placeholder">
             <article class="movie-card movie-card--placeholder">
               <h3>Films de la catégorie choisie</h3>
@@ -229,7 +254,14 @@
             </article>
           </li>
         </ul>
-        <button class="show-more-button" type="button">Voir plus</button>
+        <button
+          class="show-more-button"
+          type="button"
+          aria-controls="other-movie-list"
+          aria-expanded="false"
+        >
+          Voir plus
+        </button>
       </section>
     </main>
     <template id="movie-card-template">
